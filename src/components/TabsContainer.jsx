@@ -2,27 +2,28 @@ import React from 'react';
 import { useTabsManager } from '../hooks/useTabsManager';
 
 const defaultStyles = {
-  container: "w-full h-full flex flex-col",
-  tabBar: "flex-none flex bg-gray-800 border-b border-gray-700 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800",
+  container: "w-full h-full flex flex-col bg-gray-50",
+  tabBar: "flex-none flex bg-white border-b border-gray-200 overflow-x-auto",
   tab: (isActive, isDragging) => `
-    flex items-center min-w-[200px] max-w-[200px]
-    px-4 py-3 border-r border-gray-700 cursor-move
+    flex items-center min-w-[180px] max-w-[220px]
+    px-4 py-3 border-r border-gray-200 cursor-move
     transition-all duration-200 relative
-    ${isDragging ? 'opacity-50' : ''}
+    ${isDragging ? 'opacity-50' : 'opacity-100'}
     ${isActive 
-      ? 'bg-gray-700 text-white after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-blue-500' 
-      : 'text-gray-300 hover:bg-gray-700 hover:text-white'}
+      ? 'bg-white text-gray-900 border-b-2 border-blue-500' 
+      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}
   `,
-  tabContent: "flex-1 flex items-center overflow-hidden group px-2",
+  tabContent: "flex-1 flex items-center overflow-hidden group px-2 gap-2",
   tabLabel: "truncate flex-1 text-sm font-medium",
   closeButton: `
-    ml-2 p-1.5 rounded-full opacity-0 group-hover:opacity-100
-    transition-opacity duration-200
-    hover:bg-gray-600 cursor-pointer
+    ml-auto p-1 rounded opacity-0 group-hover:opacity-100
+    transition-all duration-200
+    hover:bg-gray-200 hover:text-red-600
+    cursor-pointer relative z-20 flex items-center justify-center
   `,
-  closeIcon: "h-4 w-4 text-gray-400 hover:text-red-400",
-  contentArea: "flex-1 bg-gray-900",
-  activeTabContent: "h-full",
+  closeIcon: "h-3.5 w-3.5 text-gray-400 hover:text-red-600 transition-colors",
+  contentArea: "flex-1 bg-white overflow-hidden",
+  activeTabContent: "h-full overflow-auto",
   dropIndicator: "absolute top-0 bottom-0 w-1 bg-blue-500 transition-all duration-200"
 };
 
@@ -141,12 +142,21 @@ export const TabsContainer = ({
                 )}
                 <span className={mergedStyles.tabLabel}>{tab.label}</span>
                 <button
+                  type="button"
                   onClick={(e) => {
+                    e.preventDefault();
                     e.stopPropagation();
                     closeTab(tab.id);
                   }}
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onDragStart={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }}
+                  draggable={false}
                   className={mergedStyles.closeButton}
                   title="Fechar aba"
+                  aria-label="Fechar aba"
                 >
                   {CloseIcon ? <CloseIcon /> : <DefaultCloseIcon />}
                 </button>

@@ -18,8 +18,10 @@ export const Tab = memo(({ id, label, children }) => {
   }
 
   return (
-    <div className="w-full h-full overflow-auto p-4">
-      {children || getFromCache(id)}
+    <div className="w-full h-full overflow-auto p-6 bg-gradient-to-br from-slate-900/50 to-slate-800/50">
+      <div className="max-w-7xl mx-auto">
+        {children || getFromCache(id)}
+      </div>
     </div>
   );
 });
